@@ -1355,12 +1355,9 @@
     <p>© 2025 Clipsly. Fait avec ❤️ en France.</p>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    const _supabase = supabase.createClient(
-      'https://heqjsyfugerterdhhyxd.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhlcWpzeWZ1Z2VydGVyZGhoeXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0ODQ4MzcsImV4cCI6MjA4OTA2MDgzN30.nCP1SXbUIM7vOg0votfKuyKJbw1-yXu6nW9IdO7fnpw'
-    );
+    const SUPABASE_URL = 'https://heqjsyfugerterdhhyxd.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhlcWpzeWZ1Z2VydGVyZGhoeXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0ODQ4MzcsImV4cCI6MjA4OTA2MDgzN30.nCP1SXbUIM7vOg0votfKuyKJbw1-yXu6nW9IdO7fnpw';
 
     // Scroll animations
     const observer = new IntersectionObserver((entries) => {
@@ -1398,17 +1395,33 @@
       btn.disabled = true;
       btn.textContent = '...';
 
-      const { error } = await _supabase.from('waitlist').insert({ email });
+      try {
+        const res = await fetch(SUPABASE_URL + '/rest/v1/waitlist', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({ email })
+        });
 
-      if (error && error.code !== '23505') {
+        // 201 = succès, 409 = doublon (email déjà inscrit) → les deux sont OK
+        if (!res.ok && res.status !== 409) {
+          const body = await res.text();
+          throw new Error('HTTP ' + res.status + ' — ' + body);
+        }
+
+        document.getElementById(inputId).closest('form').style.display = 'none';
+        document.getElementById(successId).style.display = 'block';
+      } catch (err) {
+        console.error('Waitlist error:', err);
         btn.disabled = false;
         btn.textContent = 'Je rejoins';
-        alert('Une erreur est survenue, réessaie.');
-        return false;
+        alert('Une erreur est survenue : ' + err.message);
       }
 
-      document.getElementById(inputId).closest('form').style.display = 'none';
-      document.getElementById(successId).style.display = 'block';
       return false;
     }
 
