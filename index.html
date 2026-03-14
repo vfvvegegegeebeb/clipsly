@@ -1355,7 +1355,13 @@
     <p>© 2025 Clipsly. Fait avec ❤️ en France.</p>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+    const _supabase = supabase.createClient(
+      'https://hodwhvptvrbbwteephgw.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhvZHdodnB0dnJiYnd0ZWVwaGd3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5MDg0MDgsImV4cCI6MjA4ODQ4NDQwOH0.Z9wtfKDq_gMgty6-j6ZRgdnS_nTH976jEVPPU5oXe4U'
+    );
+
     // Scroll animations
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -1383,17 +1389,26 @@
     }
 
     // Waitlist
-    function handleWaitlist(e, inputId, successId) {
+    async function handleWaitlist(e, inputId, successId) {
       e.preventDefault();
       const email = document.getElementById(inputId).value;
       if (!email) return false;
 
-      // Ici on pourrait envoyer à une API (Supabase, etc.)
-      // Pour l'instant on affiche juste le message de succès
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.textContent = '...';
+
+      const { error } = await _supabase.from('waitlist').insert({ email });
+
+      if (error && error.code !== '23505') {
+        btn.disabled = false;
+        btn.textContent = 'Je rejoins';
+        alert('Une erreur est survenue, réessaie.');
+        return false;
+      }
+
       document.getElementById(inputId).closest('form').style.display = 'none';
       document.getElementById(successId).style.display = 'block';
-
-      console.log('Email waitlist:', email); // À remplacer par l'intégration Supabase
       return false;
     }
 
