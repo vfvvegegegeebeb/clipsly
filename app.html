@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clipsly — Connexion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --white: #ffffff;
+      --grey-100: #eeeeee;
+      --grey-200: #d4d4d4;
+      --grey-500: #737373;
+      --blue: #2563eb;
+      --blue-light: #3b82f6;
+      --red: #dc2626;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #f7f7f7;
+      color: var(--black);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 26px;
+      color: var(--black);
+      text-decoration: none;
+      margin-bottom: 32px;
+      display: block;
+      text-align: center;
+    }
+    .logo span { color: var(--blue); }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--grey-100);
+      border-radius: 16px;
+      padding: 40px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 4px;
+      background: #f3f3f3;
+      border-radius: 10px;
+      padding: 4px;
+      margin-bottom: 32px;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--grey-500);
+      transition: all 0.2s;
+      border: none;
+      background: none;
+    }
+    .tab.active {
+      background: var(--white);
+      color: var(--black);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 6px;
+      color: var(--black);
+    }
+
+    input[type="email"],
+    input[type="password"],
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--grey-200);
+      border-radius: 10px;
+      font-size: 15px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+      background: var(--white);
+    }
+    input:focus { border-color: var(--blue); }
+
+    .btn {
+      width: 100%;
+      padding: 13px;
+      background: var(--black);
+      color: var(--white);
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 8px;
+    }
+    .btn:hover { background: #222; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .error-msg {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: var(--red);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .success-msg {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #16a34a;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .divider {
+      text-align: center;
+      color: var(--grey-500);
+      font-size: 13px;
+      margin: 20px 0;
+      position: relative;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 42%;
+      height: 1px;
+      background: var(--grey-100);
+    }
+    .divider::before { left: 0; }
+    .divider::after { right: 0; }
+
+    .btn-google {
+      width: 100%;
+      padding: 12px;
+      background: var(--white);
+      border: 1.5px solid var(--grey-200);
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: background 0.2s;
+    }
+    .btn-google:hover { background: #f7f7f7; }
+
+    .footer-link {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--grey-500);
+    }
+    .footer-link a { color: var(--blue); text-decoration: none; }
+
+    .panel { display: none; }
+    .panel.active { display: block; }
+  </style>
+</head>
+<body>
+
+  <a href="index.html" class="logo">Clips<span>ly</span></a>
+
+  <div class="card">
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('login')">Connexion</button>
+      <button class="tab" onclick="switchTab('signup')">Inscription</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div class="panel active" id="panel-login">
+      <div class="error-msg" id="login-error"></div>
+      <form onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="login-email" placeholder="ton@email.fr" required />
+        </div>
+        <div class="form-group">
+          <label>Mot de passe</label>
+          <input type="password" id="login-password" placeholder="••••••••" required />
+        </div>
+        <button type="submit" class="btn" id="login-btn">Se connecter</button>
+      </form>
+      <div class="divider">ou</div>
+      <button class="btn-google" onclick="handleGoogle()">
+        <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/><path fill="#FBBC05" d="M3.964 10.706c-.18-.54-.282-1.117-.282-1.706s.102-1.166.282-1.706V4.962H.957C.347 6.175 0 7.55 0 9s.348 2.825.957 4.038l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.962L3.964 7.294C4.672 5.167 6.656 3.58 9 3.58z"/></svg>
+        Continuer avec Google
+      </button>
+    </div>
+
+    <!-- SIGNUP -->
+    <div class="panel" id="panel-signup">
+      <div class="error-msg" id="signup-error"></div>
+      <div class="success-msg" id="signup-success">Email de confirmation envoyé ! Vérifie ta boîte mail.</div>
+      <form onsubmit="handleSignup(event)" id="signup-form">
+        <div class="form-group">
+          <label>Prénom</label>
+          <input type="text" id="signup-name" placeholder="Ton prénom" required />
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="signup-email" placeholder="ton@email.fr" required />
+        </div>
+        <div class="form-group">
+          <label>Mot de passe</label>
+          <input type="password" id="signup-password" placeholder="8 caractères minimum" required minlength="8" />
+        </div>
+        <button type="submit" class="btn" id="signup-btn">Créer mon compte</button>
+      </form>
+      <div class="divider">ou</div>
+      <button class="btn-google" onclick="handleGoogle()">
+        <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/><path fill="#FBBC05" d="M3.964 10.706c-.18-.54-.282-1.117-.282-1.706s.102-1.166.282-1.706V4.962H.957C.347 6.175 0 7.55 0 9s.348 2.825.957 4.038l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.962L3.964 7.294C4.672 5.167 6.656 3.58 9 3.58z"/></svg>
+        Continuer avec Google
+      </button>
+    </div>
+  </div>
+
+  <div class="footer-link">
+    <a href="index.html">← Retour à l'accueil</a>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const _supabase = supabase.createClient(
+      'https://hodwhvptvrbbwteephgw.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhvZHdodnB0dnJiYnd0ZWVwaGd3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5MDg0MDgsImV4cCI6MjA4ODQ4NDQwOH0.Z9wtfKDq_gMgty6-j6ZRgdnS_nTH976jEVPPU5oXe4U'
+    );
+
+    // Redirect if already logged in
+    _supabase.auth.getSession().then(({ data }) => {
+      if (data.session) window.location.href = 'dashboard.html';
+    });
+
+    function switchTab(tab) {
+      document.querySelectorAll('.tab').forEach((t, i) => {
+        t.classList.toggle('active', (i === 0 && tab === 'login') || (i === 1 && tab === 'signup'));
+      });
+      document.getElementById('panel-login').classList.toggle('active', tab === 'login');
+      document.getElementById('panel-signup').classList.toggle('active', tab === 'signup');
+    }
+
+    function showError(id, msg) {
+      const el = document.getElementById(id);
+      el.textContent = msg;
+      el.style.display = 'block';
+    }
+    function hideError(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      hideError('login-error');
+      const btn = document.getElementById('login-btn');
+      btn.disabled = true;
+      btn.textContent = 'Connexion...';
+
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+
+      const { error } = await _supabase.auth.signInWithPassword({ email, password });
+
+      if (error) {
+        showError('login-error', 'Email ou mot de passe incorrect.');
+        btn.disabled = false;
+        btn.textContent = 'Se connecter';
+      } else {
+        window.location.href = 'dashboard.html';
+      }
+    }
+
+    async function handleSignup(e) {
+      e.preventDefault();
+      hideError('signup-error');
+      const btn = document.getElementById('signup-btn');
+      btn.disabled = true;
+      btn.textContent = 'Création...';
+
+      const name = document.getElementById('signup-name').value;
+      const email = document.getElementById('signup-email').value;
+      const password = document.getElementById('signup-password').value;
+
+      const { error } = await _supabase.auth.signUp({
+        email,
+        password,
+        options: { data: { full_name: name } }
+      });
+
+      if (error) {
+        showError('signup-error', error.message);
+        btn.disabled = false;
+        btn.textContent = 'Créer mon compte';
+      } else {
+        document.getElementById('signup-form').style.display = 'none';
+        document.getElementById('signup-success').style.display = 'block';
+      }
+    }
+
+    async function handleGoogle() {
+      await _supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: window.location.origin + '/dashboard.html' }
+      });
+    }
+  </script>
+</body>
+</html>

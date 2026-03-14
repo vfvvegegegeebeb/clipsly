@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clipsly — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --white: #ffffff;
+      --grey-50: #f7f7f7;
+      --grey-100: #eeeeee;
+      --grey-200: #d4d4d4;
+      --grey-500: #737373;
+      --grey-700: #404040;
+      --blue: #2563eb;
+      --blue-light: #3b82f6;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--grey-50);
+      color: var(--black);
+      min-height: 100vh;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      width: 240px;
+      background: var(--white);
+      border-right: 1px solid var(--grey-100);
+      display: flex;
+      flex-direction: column;
+      padding: 24px 16px;
+      z-index: 10;
+    }
+
+    .sidebar-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      color: var(--black);
+      text-decoration: none;
+      padding: 4px 12px 20px;
+      display: block;
+      border-bottom: 1px solid var(--grey-100);
+      margin-bottom: 16px;
+    }
+    .sidebar-logo span { color: var(--blue); }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--grey-700);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+      margin-bottom: 2px;
+    }
+    .nav-item:hover { background: var(--grey-50); color: var(--black); }
+    .nav-item.active { background: #eff6ff; color: var(--blue); }
+    .nav-item svg { flex-shrink: 0; }
+
+    .sidebar-bottom {
+      margin-top: auto;
+      border-top: 1px solid var(--grey-100);
+      padding-top: 16px;
+    }
+
+    .user-chip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
+    }
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .user-info { flex: 1; min-width: 0; }
+    .user-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .user-plan { font-size: 11px; color: var(--grey-500); }
+
+    .btn-logout {
+      width: 100%;
+      margin-top: 8px;
+      padding: 9px;
+      background: none;
+      border: 1.5px solid var(--grey-200);
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      color: var(--grey-700);
+      transition: background 0.15s;
+    }
+    .btn-logout:hover { background: var(--grey-50); }
+
+    /* MAIN */
+    .main {
+      margin-left: 240px;
+      padding: 40px;
+      min-height: 100vh;
+    }
+
+    .page-header {
+      margin-bottom: 32px;
+    }
+    .page-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+    }
+    .page-sub {
+      color: var(--grey-500);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    /* UPLOAD ZONE */
+    .upload-zone {
+      border: 2px dashed var(--grey-200);
+      border-radius: 16px;
+      padding: 64px 32px;
+      text-align: center;
+      background: var(--white);
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      margin-bottom: 40px;
+    }
+    .upload-zone:hover, .upload-zone.dragover {
+      border-color: var(--blue);
+      background: #eff6ff;
+    }
+
+    .upload-icon {
+      width: 56px;
+      height: 56px;
+      background: var(--grey-50);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+
+    .upload-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .upload-sub {
+      color: var(--grey-500);
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .btn-upload {
+      display: inline-block;
+      padding: 11px 24px;
+      background: var(--black);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-upload:hover { background: #222; }
+
+    .upload-note {
+      font-size: 12px;
+      color: var(--grey-500);
+      margin-top: 12px;
+    }
+
+    /* COMING SOON BANNER */
+    .coming-soon-banner {
+      background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+      border-radius: 16px;
+      padding: 32px 36px;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .banner-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .banner-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .banner-sub {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    .banner-icon {
+      font-size: 56px;
+      flex-shrink: 0;
+    }
+
+    /* STATS */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .stat-card {
+      background: var(--white);
+      border: 1px solid var(--grey-100);
+      border-radius: 12px;
+      padding: 20px 24px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--grey-500);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-family: 'Syne', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .stat-sub {
+      font-size: 12px;
+      color: var(--grey-500);
+      margin-top: 2px;
+    }
+
+    /* CLIPS SECTION */
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .empty-state {
+      background: var(--white);
+      border: 1px solid var(--grey-100);
+      border-radius: 12px;
+      padding: 48px;
+      text-align: center;
+    }
+
+    .empty-icon {
+      font-size: 40px;
+      margin-bottom: 12px;
+    }
+
+    .empty-title {
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .empty-sub {
+      font-size: 14px;
+      color: var(--grey-500);
+    }
+
+    /* HIDDEN FILE INPUT */
+    #fileInput { display: none; }
+
+    @media (max-width: 900px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; padding: 24px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .coming-soon-banner { flex-direction: column; }
+      .banner-icon { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <aside class="sidebar">
+    <a href="index.html" class="sidebar-logo">Clips<span>ly</span></a>
+
+    <a class="nav-item active" href="#">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </a>
+    <a class="nav-item" href="#" onclick="showComingSoon()">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+      Mes clips
+    </a>
+    <a class="nav-item" href="#" onclick="showComingSoon()">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+      Paramètres
+    </a>
+
+    <div class="sidebar-bottom">
+      <div class="user-chip">
+        <div class="avatar" id="user-avatar">?</div>
+        <div class="user-info">
+          <div class="user-name" id="user-name">Chargement...</div>
+          <div class="user-plan">Plan Gratuit</div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="handleLogout()">Se déconnecter</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <h1 class="page-title">Bonjour, <span id="greeting-name">...</span> 👋</h1>
+      <p class="page-sub">Prêt à transformer tes vidéos en clips viraux ?</p>
+    </div>
+
+    <!-- COMING SOON BANNER -->
+    <div class="coming-soon-banner">
+      <div>
+        <div class="banner-badge">Bientôt disponible</div>
+        <div class="banner-title">Le traitement IA arrive très vite</div>
+        <div class="banner-sub">Tu seras parmi les premiers à recevoir l'accès. On te notifiera par email dès le lancement.</div>
+      </div>
+      <div class="banner-icon">🚀</div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Clips générés</div>
+        <div class="stat-value">0</div>
+        <div class="stat-sub">Ce mois-ci</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Clips restants</div>
+        <div class="stat-value">5</div>
+        <div class="stat-sub">Plan gratuit</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Vidéos traitées</div>
+        <div class="stat-value">0</div>
+        <div class="stat-sub">Total</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Temps économisé</div>
+        <div class="stat-value">0h</div>
+        <div class="stat-sub">Estimé</div>
+      </div>
+    </div>
+
+    <!-- UPLOAD -->
+    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+      <div class="upload-icon">
+        <svg width="24" height="24" fill="none" stroke="#737373" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      </div>
+      <div class="upload-title">Dépose ta vidéo ici</div>
+      <div class="upload-sub">Podcast, interview, vlog, gaming — on s'occupe du reste</div>
+      <button class="btn-upload" onclick="event.stopPropagation(); showComingSoon()">Choisir une vidéo</button>
+      <p class="upload-note">MP4, MOV, AVI · Jusqu'à 10 min (plan gratuit)</p>
+    </div>
+    <input type="file" id="fileInput" accept="video/*" onchange="showComingSoon()" />
+
+    <!-- CLIPS -->
+    <div class="section-title">Mes derniers clips</div>
+    <div class="empty-state">
+      <div class="empty-icon">🎬</div>
+      <div class="empty-title">Aucun clip pour l'instant</div>
+      <div class="empty-sub">Tes clips apparaîtront ici dès que le traitement IA sera disponible.</div>
+    </div>
+  </main>
+
+  <!-- COMING SOON TOAST -->
+  <div id="toast" style="position:fixed;bottom:24px;right:24px;background:#0a0a0a;color:white;padding:14px 20px;border-radius:10px;font-size:14px;font-weight:500;transform:translateY(80px);transition:transform 0.3s;z-index:999;">
+    🚧 Cette fonctionnalité arrive bientôt !
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const _supabase = supabase.createClient(
+      'https://hodwhvptvrbbwteephgw.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhvZHdodnB0dnJiYnd0ZWVwaGd3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5MDg0MDgsImV4cCI6MjA4ODQ4NDQwOH0.Z9wtfKDq_gMgty6-j6ZRgdnS_nTH976jEVPPU5oXe4U'
+    );
+
+    // Auth guard
+    _supabase.auth.getSession().then(({ data }) => {
+      if (!data.session) {
+        window.location.href = 'app.html';
+        return;
+      }
+      const user = data.session.user;
+      const name = user.user_metadata?.full_name || user.email.split('@')[0];
+      const initial = name.charAt(0).toUpperCase();
+
+      document.getElementById('user-avatar').textContent = initial;
+      document.getElementById('user-name').textContent = name;
+      document.getElementById('greeting-name').textContent = name.split(' ')[0];
+    });
+
+    async function handleLogout() {
+      await _supabase.auth.signOut();
+      window.location.href = 'app.html';
+    }
+
+    function showComingSoon() {
+      const toast = document.getElementById('toast');
+      toast.style.transform = 'translateY(0)';
+      setTimeout(() => { toast.style.transform = 'translateY(80px)'; }, 3000);
+    }
+
+    function onDragOver(e) {
+      e.preventDefault();
+      document.getElementById('uploadZone').classList.add('dragover');
+    }
+    function onDragLeave() {
+      document.getElementById('uploadZone').classList.remove('dragover');
+    }
+    function onDrop(e) {
+      e.preventDefault();
+      document.getElementById('uploadZone').classList.remove('dragover');
+      showComingSoon();
+    }
+  </script>
+</body>
+</html>
