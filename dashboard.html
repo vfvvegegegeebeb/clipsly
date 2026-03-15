@@ -8,462 +8,654 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --black: #0a0a0a;
-      --white: #ffffff;
-      --grey-50: #f7f7f7;
-      --grey-100: #eeeeee;
-      --grey-200: #d4d4d4;
-      --grey-500: #737373;
-      --grey-700: #404040;
-      --blue: #2563eb;
-      --blue-light: #3b82f6;
+      --black: #0a0a0a; --white: #ffffff;
+      --grey-50: #f7f7f7; --grey-100: #eeeeee; --grey-200: #d4d4d4;
+      --grey-500: #737373; --grey-700: #404040;
+      --blue: #2563eb; --blue-light: #eff6ff;
+      --green: #16a34a; --green-light: #dcfce7;
     }
-
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--grey-50);
-      color: var(--black);
-      min-height: 100vh;
-    }
+    body { font-family: 'DM Sans', sans-serif; background: var(--grey-50); color: var(--black); min-height: 100vh; }
 
     /* SIDEBAR */
-    .sidebar {
-      position: fixed;
-      top: 0; left: 0; bottom: 0;
-      width: 240px;
-      background: var(--white);
-      border-right: 1px solid var(--grey-100);
-      display: flex;
-      flex-direction: column;
-      padding: 24px 16px;
-      z-index: 10;
-    }
-
-    .sidebar-logo {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 22px;
-      color: var(--black);
-      text-decoration: none;
-      padding: 4px 12px 20px;
-      display: block;
-      border-bottom: 1px solid var(--grey-100);
-      margin-bottom: 16px;
-    }
+    .sidebar { position: fixed; top: 0; left: 0; bottom: 0; width: 240px; background: var(--white); border-right: 1px solid var(--grey-100); display: flex; flex-direction: column; padding: 24px 16px; z-index: 10; }
+    .sidebar-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 22px; color: var(--black); text-decoration: none; padding: 4px 12px 20px; display: block; border-bottom: 1px solid var(--grey-100); margin-bottom: 16px; }
     .sidebar-logo span { color: var(--blue); }
-
-    .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--grey-700);
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.15s, color 0.15s;
-      margin-bottom: 2px;
-    }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; font-size: 14px; font-weight: 500; color: var(--grey-700); cursor: pointer; text-decoration: none; transition: background .15s, color .15s; margin-bottom: 2px; }
     .nav-item:hover { background: var(--grey-50); color: var(--black); }
-    .nav-item.active { background: #eff6ff; color: var(--blue); }
+    .nav-item.active { background: var(--blue-light); color: var(--blue); }
     .nav-item svg { flex-shrink: 0; }
-
-    .sidebar-bottom {
-      margin-top: auto;
-      border-top: 1px solid var(--grey-100);
-      padding-top: 16px;
-    }
-
-    .user-chip {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 12px;
-      border-radius: 8px;
-    }
-
-    .avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: var(--blue);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 13px;
-      font-weight: 700;
-      flex-shrink: 0;
-    }
-
+    .sidebar-bottom { margin-top: auto; border-top: 1px solid var(--grey-100); padding-top: 16px; }
+    .user-chip { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 8px; }
+    .avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--blue); display: flex; align-items: center; justify-content: center; color: white; font-size: 13px; font-weight: 700; flex-shrink: 0; }
     .user-info { flex: 1; min-width: 0; }
     .user-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .user-plan { font-size: 11px; color: var(--grey-500); }
-
-    .btn-logout {
-      width: 100%;
-      margin-top: 8px;
-      padding: 9px;
-      background: none;
-      border: 1.5px solid var(--grey-200);
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 500;
-      font-family: inherit;
-      cursor: pointer;
-      color: var(--grey-700);
-      transition: background 0.15s;
-    }
+    .btn-logout { width: 100%; margin-top: 8px; padding: 9px; background: none; border: 1.5px solid var(--grey-200); border-radius: 8px; font-size: 13px; font-weight: 500; font-family: inherit; cursor: pointer; color: var(--grey-700); transition: background .15s; }
     .btn-logout:hover { background: var(--grey-50); }
 
     /* MAIN */
-    .main {
-      margin-left: 240px;
-      padding: 40px;
-      min-height: 100vh;
-    }
+    .main { margin-left: 240px; padding: 40px; min-height: 100vh; }
+    .page-header { margin-bottom: 32px; }
+    .page-title { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; }
+    .page-sub { color: var(--grey-500); font-size: 14px; margin-top: 4px; }
 
-    .page-header {
-      margin-bottom: 32px;
-    }
-    .page-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 26px;
-      font-weight: 800;
-    }
-    .page-sub {
-      color: var(--grey-500);
-      font-size: 14px;
-      margin-top: 4px;
-    }
-
-    /* UPLOAD ZONE */
-    .upload-zone {
-      border: 2px dashed var(--grey-200);
-      border-radius: 16px;
-      padding: 64px 32px;
-      text-align: center;
-      background: var(--white);
-      cursor: pointer;
-      transition: border-color 0.2s, background 0.2s;
-      margin-bottom: 40px;
-    }
-    .upload-zone:hover, .upload-zone.dragover {
-      border-color: var(--blue);
-      background: #eff6ff;
-    }
-
-    .upload-icon {
-      width: 56px;
-      height: 56px;
-      background: var(--grey-50);
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 16px;
-    }
-
-    .upload-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-
-    .upload-sub {
-      color: var(--grey-500);
-      font-size: 14px;
-      margin-bottom: 20px;
-    }
-
-    .btn-upload {
-      display: inline-block;
-      padding: 11px 24px;
-      background: var(--black);
-      color: var(--white);
-      border: none;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 600;
-      font-family: inherit;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .btn-upload:hover { background: #222; }
-
-    .upload-note {
-      font-size: 12px;
-      color: var(--grey-500);
-      margin-top: 12px;
-    }
-
-    /* COMING SOON BANNER */
-    .coming-soon-banner {
-      background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
-      border-radius: 16px;
-      padding: 32px 36px;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-      margin-bottom: 40px;
-    }
-
-    .banner-badge {
-      display: inline-block;
-      background: rgba(255,255,255,0.15);
-      border-radius: 20px;
-      padding: 4px 12px;
-      font-size: 12px;
-      font-weight: 600;
-      margin-bottom: 10px;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-
-    .banner-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 22px;
-      font-weight: 800;
-      margin-bottom: 6px;
-    }
-
-    .banner-sub {
-      font-size: 14px;
-      opacity: 0.8;
-    }
-
-    .banner-icon {
-      font-size: 56px;
-      flex-shrink: 0;
-    }
+    /* API KEY BANNER */
+    .apikey-banner { background: #fffbeb; border: 1px solid #fcd34d; border-radius: 12px; padding: 16px 20px; display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+    .apikey-banner-text { flex: 1; font-size: 14px; }
+    .apikey-banner-text strong { display: block; margin-bottom: 2px; }
+    .apikey-banner-text span { color: var(--grey-500); font-size: 13px; }
+    .btn-setup { padding: 8px 16px; background: var(--black); color: white; border: none; border-radius: 7px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; white-space: nowrap; }
 
     /* STATS */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      margin-bottom: 40px;
-    }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+    .stat-card { background: var(--white); border: 1px solid var(--grey-100); border-radius: 12px; padding: 20px 24px; }
+    .stat-label { font-size: 12px; color: var(--grey-500); font-weight: 500; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
+    .stat-value { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; }
+    .stat-sub { font-size: 12px; color: var(--grey-500); margin-top: 2px; }
 
-    .stat-card {
-      background: var(--white);
-      border: 1px solid var(--grey-100);
-      border-radius: 12px;
-      padding: 20px 24px;
-    }
+    /* UPLOAD ZONE */
+    .upload-zone { border: 2px dashed var(--grey-200); border-radius: 16px; padding: 48px 32px; text-align: center; background: var(--white); transition: border-color .2s, background .2s; margin-bottom: 32px; }
+    .upload-zone.clickable { cursor: pointer; }
+    .upload-zone.dragover, .upload-zone.has-file { border-color: var(--blue); background: var(--blue-light); }
+    .upload-icon { width: 56px; height: 56px; background: var(--grey-50); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+    .upload-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .upload-sub { color: var(--grey-500); font-size: 14px; margin-bottom: 20px; }
+    .btn-pick { display: inline-block; padding: 11px 24px; background: var(--black); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer; transition: background .2s; }
+    .btn-pick:hover { background: #222; }
+    .upload-note { font-size: 12px; color: var(--grey-500); margin-top: 12px; }
 
-    .stat-label {
-      font-size: 12px;
-      color: var(--grey-500);
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 8px;
-    }
+    /* FILE SELECTED */
+    .file-info-row { display: flex; align-items: center; gap: 12px; background: white; border: 1px solid var(--grey-100); border-radius: 10px; padding: 12px 16px; margin-bottom: 20px; text-align: left; }
+    .file-info-icon { font-size: 28px; flex-shrink: 0; }
+    .file-info-name { font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 320px; }
+    .file-info-size { font-size: 12px; color: var(--grey-500); margin-top: 2px; }
+    .file-actions { display: flex; gap: 8px; justify-content: center; }
+    .btn-analyze { padding: 12px 28px; background: var(--blue); color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; font-family: inherit; cursor: pointer; transition: background .2s; }
+    .btn-analyze:hover { background: #1d4ed8; }
+    .btn-analyze:disabled { opacity: .6; cursor: not-allowed; }
+    .btn-change { padding: 12px 16px; background: none; border: 1.5px solid var(--grey-200); border-radius: 8px; font-size: 14px; font-family: inherit; cursor: pointer; color: var(--grey-700); }
 
-    .stat-value {
-      font-family: 'Syne', sans-serif;
-      font-size: 28px;
-      font-weight: 800;
-    }
+    /* PIPELINE */
+    .pipeline-card { background: var(--white); border: 1px solid var(--grey-100); border-radius: 16px; padding: 32px; margin-bottom: 24px; }
+    .pipeline-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+    .pipeline-sub { font-size: 14px; color: var(--grey-500); margin-bottom: 28px; }
+    .steps-list { display: flex; flex-direction: column; gap: 12px; }
+    .step-item { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 10px; border: 1.5px solid var(--grey-100); background: var(--grey-50); transition: all .3s; }
+    .step-item.active { border-color: var(--blue); background: var(--blue-light); }
+    .step-item.done { border-color: #86efac; background: var(--green-light); }
+    .step-item.error { border-color: #fca5a5; background: #fef2f2; }
+    .step-icon-wrap { width: 36px; height: 36px; border-radius: 8px; background: var(--grey-200); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 16px; transition: background .3s; }
+    .step-item.active .step-icon-wrap { background: var(--blue); }
+    .step-item.done .step-icon-wrap { background: var(--green); }
+    .step-item.error .step-icon-wrap { background: #dc2626; }
+    .step-body { flex: 1; }
+    .step-name { font-size: 14px; font-weight: 600; }
+    .step-status { font-size: 12px; color: var(--grey-500); margin-top: 2px; }
+    .step-item.active .step-status { color: var(--blue); }
+    .step-item.done .step-status { color: var(--green); }
+    .step-badge { font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 20px; background: var(--grey-200); color: var(--grey-500); white-space: nowrap; }
+    .step-item.active .step-badge { background: #dbeafe; color: var(--blue); }
+    .step-item.done .step-badge { background: #bbf7d0; color: var(--green); }
+    .step-item.error .step-badge { background: #fee2e2; color: #dc2626; }
+    .progress-wrap { margin-top: 8px; height: 4px; background: #dbeafe; border-radius: 4px; overflow: hidden; }
+    .progress-bar { height: 100%; background: var(--blue); border-radius: 4px; transition: width .3s ease; }
 
-    .stat-sub {
-      font-size: 12px;
-      color: var(--grey-500);
-      margin-top: 2px;
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.35); border-top-color: white; border-radius: 50%; animation: spin .8s linear infinite; display: inline-block; }
 
-    /* CLIPS SECTION */
-    .section-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 16px;
-    }
+    /* TRANSCRIPT */
+    .transcript-card { background: var(--white); border: 1px solid var(--grey-100); border-radius: 16px; overflow: hidden; margin-bottom: 24px; }
+    .transcript-header { padding: 20px 24px; border-bottom: 1px solid var(--grey-100); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .transcript-header-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; }
+    .transcript-header-meta { font-size: 12px; color: var(--grey-500); margin-top: 2px; }
+    .transcript-actions { display: flex; gap: 8px; }
+    .btn-sm { padding: 7px 14px; border: 1.5px solid var(--grey-200); border-radius: 7px; font-size: 13px; font-weight: 500; cursor: pointer; background: none; font-family: inherit; color: var(--grey-700); transition: background .15s; }
+    .btn-sm:hover { background: var(--grey-50); }
+    .btn-sm.primary { background: var(--blue); color: white; border-color: var(--blue); }
+    .btn-sm.primary:hover { background: #1d4ed8; }
+    .transcript-body { padding: 16px 24px; max-height: 420px; overflow-y: auto; }
+    .segment { display: flex; gap: 12px; padding: 7px 8px; border-radius: 7px; cursor: pointer; transition: background .15s; }
+    .segment:hover { background: var(--grey-50); }
+    .seg-time { font-size: 11px; font-weight: 600; color: var(--grey-500); white-space: nowrap; min-width: 90px; padding-top: 3px; font-family: monospace; }
+    .seg-text { font-size: 14px; line-height: 1.65; }
 
-    .empty-state {
-      background: var(--white);
-      border: 1px solid var(--grey-100);
-      border-radius: 12px;
-      padding: 48px;
-      text-align: center;
-    }
+    /* NEXT STEP BANNER */
+    .next-banner { background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%); border-radius: 14px; padding: 24px 28px; color: white; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .next-banner-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 800; margin-bottom: 4px; }
+    .next-banner-sub { font-size: 13px; opacity: .8; }
+    .next-banner-icon { font-size: 40px; flex-shrink: 0; }
+    .btn-white { padding: 10px 20px; background: white; color: var(--blue); border: none; border-radius: 8px; font-size: 14px; font-weight: 700; font-family: inherit; cursor: pointer; white-space: nowrap; }
 
-    .empty-icon {
-      font-size: 40px;
-      margin-bottom: 12px;
-    }
+    /* SETTINGS MODAL */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px; }
+    .modal { background: white; border-radius: 16px; padding: 32px; width: 100%; max-width: 460px; }
+    .modal-title { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; margin-bottom: 8px; }
+    .modal-sub { font-size: 14px; color: var(--grey-500); margin-bottom: 24px; }
+    .form-label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+    .form-input { width: 100%; padding: 10px 12px; border: 1.5px solid var(--grey-200); border-radius: 8px; font-size: 14px; font-family: inherit; outline: none; transition: border-color .2s; }
+    .form-input:focus { border-color: var(--blue); }
+    .form-hint { font-size: 12px; color: var(--grey-500); margin-top: 8px; line-height: 1.5; }
+    .form-hint a { color: var(--blue); }
+    .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 24px; }
+    .btn-cancel { padding: 10px 18px; border: 1.5px solid var(--grey-200); border-radius: 8px; font-size: 14px; font-family: inherit; cursor: pointer; background: none; color: var(--grey-700); }
+    .btn-save { padding: 10px 20px; background: var(--black); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer; }
 
-    .empty-title {
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
+    /* TOAST */
+    .toast { position: fixed; bottom: 24px; right: 24px; background: #0a0a0a; color: white; padding: 14px 20px; border-radius: 10px; font-size: 14px; font-weight: 500; transform: translateY(80px); transition: transform .3s; z-index: 999; pointer-events: none; }
+    .toast.show { transform: translateY(0); }
 
-    .empty-sub {
-      font-size: 14px;
-      color: var(--grey-500);
-    }
-
-    /* HIDDEN FILE INPUT */
     #fileInput { display: none; }
 
     @media (max-width: 900px) {
       .sidebar { display: none; }
-      .main { margin-left: 0; padding: 24px; }
+      .main { margin-left: 0 !important; padding: 24px; }
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
-      .coming-soon-banner { flex-direction: column; }
-      .banner-icon { display: none; }
     }
   </style>
 </head>
 <body>
 
-  <aside class="sidebar">
-    <a href="index.html" class="sidebar-logo">Clips<span>ly</span></a>
-
-    <a class="nav-item active" href="#">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-      Dashboard
-    </a>
-    <a class="nav-item" href="#" onclick="showComingSoon()">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
-      Mes clips
-    </a>
-    <a class="nav-item" href="#" onclick="showComingSoon()">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
-      Paramètres
-    </a>
-
-    <div class="sidebar-bottom">
-      <div class="user-chip">
-        <div class="avatar" id="user-avatar">?</div>
-        <div class="user-info">
-          <div class="user-name" id="user-name">Chargement...</div>
-          <div class="user-plan">Plan Gratuit</div>
-        </div>
-      </div>
-      <button class="btn-logout" onclick="handleLogout()">Se déconnecter</button>
-    </div>
-  </aside>
-
-  <main class="main">
-    <div class="page-header">
-      <h1 class="page-title">Bonjour, <span id="greeting-name">...</span> 👋</h1>
-      <p class="page-sub">Prêt à transformer tes vidéos en clips viraux ?</p>
-    </div>
-
-    <!-- COMING SOON BANNER -->
-    <div class="coming-soon-banner">
-      <div>
-        <div class="banner-badge">Bientôt disponible</div>
-        <div class="banner-title">Le traitement IA arrive très vite</div>
-        <div class="banner-sub">Tu seras parmi les premiers à recevoir l'accès. On te notifiera par email dès le lancement.</div>
-      </div>
-      <div class="banner-icon">🚀</div>
-    </div>
-
-    <!-- STATS -->
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-label">Clips générés</div>
-        <div class="stat-value">0</div>
-        <div class="stat-sub">Ce mois-ci</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Clips restants</div>
-        <div class="stat-value">5</div>
-        <div class="stat-sub">Plan gratuit</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Vidéos traitées</div>
-        <div class="stat-value">0</div>
-        <div class="stat-sub">Total</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Temps économisé</div>
-        <div class="stat-value">0h</div>
-        <div class="stat-sub">Estimé</div>
+<aside class="sidebar">
+  <a href="index.html" class="sidebar-logo">Clips<span>ly</span></a>
+  <a class="nav-item active" href="#">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+    Dashboard
+  </a>
+  <a class="nav-item" href="#" id="nav-clips">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+    Mes clips
+  </a>
+  <a class="nav-item" href="#" id="nav-settings">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+    Paramètres
+  </a>
+  <div class="sidebar-bottom">
+    <div class="user-chip">
+      <div class="avatar" id="user-avatar">?</div>
+      <div class="user-info">
+        <div class="user-name" id="user-name">Chargement...</div>
+        <div class="user-plan">Plan Gratuit</div>
       </div>
     </div>
+    <button class="btn-logout" id="btn-logout">Se déconnecter</button>
+  </div>
+</aside>
 
-    <!-- UPLOAD -->
-    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
-      <div class="upload-icon">
-        <svg width="24" height="24" fill="none" stroke="#737373" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-      </div>
-      <div class="upload-title">Dépose ta vidéo ici</div>
-      <div class="upload-sub">Podcast, interview, vlog, gaming — on s'occupe du reste</div>
-      <button class="btn-upload" onclick="event.stopPropagation(); showComingSoon()">Choisir une vidéo</button>
-      <p class="upload-note">MP4, MOV, AVI · Jusqu'à 10 min (plan gratuit)</p>
-    </div>
-    <input type="file" id="fileInput" accept="video/*" onchange="showComingSoon()" />
-
-    <!-- CLIPS -->
-    <div class="section-title">Mes derniers clips</div>
-    <div class="empty-state">
-      <div class="empty-icon">🎬</div>
-      <div class="empty-title">Aucun clip pour l'instant</div>
-      <div class="empty-sub">Tes clips apparaîtront ici dès que le traitement IA sera disponible.</div>
-    </div>
-  </main>
-
-  <!-- COMING SOON TOAST -->
-  <div id="toast" style="position:fixed;bottom:24px;right:24px;background:#0a0a0a;color:white;padding:14px 20px;border-radius:10px;font-size:14px;font-weight:500;transform:translateY(80px);transition:transform 0.3s;z-index:999;">
-    🚧 Cette fonctionnalité arrive bientôt !
+<main class="main">
+  <div class="page-header">
+    <h1 class="page-title">Bonjour, <span id="greeting-name">...</span> 👋</h1>
+    <p class="page-sub">Transforme tes vidéos en clips viraux grâce à l'IA.</p>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    const _supabase = supabase.createClient(
-      'https://heqjsyfugerterdhhyxd.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhlcWpzeWZ1Z2VydGVyZGhoeXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0ODQ4MzcsImV4cCI6MjA4OTA2MDgzN30.nCP1SXbUIM7vOg0votfKuyKJbw1-yXu6nW9IdO7fnpw'
+  <!-- API Key banner -->
+  <div id="apikey-banner" class="apikey-banner" style="display:none">
+    <span style="font-size:20px">🔑</span>
+    <div class="apikey-banner-text">
+      <strong>Clé API Groq requise</strong>
+      <span>Ajoute ta clé gratuite pour activer la transcription Whisper IA.</span>
+    </div>
+    <button class="btn-setup" id="btn-banner-settings">Configurer</button>
+  </div>
+
+  <!-- VIEW: idle -->
+  <div id="view-idle">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-label">Clips générés</div><div class="stat-value">0</div><div class="stat-sub">Ce mois-ci</div></div>
+      <div class="stat-card"><div class="stat-label">Clips restants</div><div class="stat-value">5</div><div class="stat-sub">Plan gratuit</div></div>
+      <div class="stat-card"><div class="stat-label">Vidéos traitées</div><div class="stat-value">0</div><div class="stat-sub">Total</div></div>
+      <div class="stat-card"><div class="stat-label">Temps économisé</div><div class="stat-value">0h</div><div class="stat-sub">Estimé</div></div>
+    </div>
+
+    <div class="upload-zone clickable" id="uploadZone">
+      <!-- Idle -->
+      <div id="ui-idle">
+        <div class="upload-icon">
+          <svg width="24" height="24" fill="none" stroke="#737373" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </div>
+        <div class="upload-title">Dépose ta vidéo ici</div>
+        <div class="upload-sub">Podcast, interview, vlog, gaming — on s'occupe du reste</div>
+        <button class="btn-pick" id="btn-pick">Choisir une vidéo</button>
+        <p class="upload-note">MP4, MOV, MKV, AVI · Jusqu'à 2 Go</p>
+      </div>
+      <!-- File selected -->
+      <div id="ui-selected" style="display:none">
+        <div class="file-info-row">
+          <div class="file-info-icon">🎬</div>
+          <div>
+            <div class="file-info-name" id="file-name">—</div>
+            <div class="file-info-size" id="file-size">—</div>
+          </div>
+        </div>
+        <div class="file-actions">
+          <button class="btn-change" id="btn-change">Changer</button>
+          <button class="btn-analyze" id="btn-analyze">✨ Analyser la vidéo</button>
+        </div>
+      </div>
+    </div>
+    <input type="file" id="fileInput" accept="video/*" />
+  </div>
+
+  <!-- VIEW: processing -->
+  <div id="view-processing" style="display:none">
+    <div class="pipeline-card">
+      <div class="pipeline-title">Analyse en cours...</div>
+      <div class="pipeline-sub" id="pipeline-sub">Préparation</div>
+      <div class="steps-list">
+
+        <div class="step-item" id="step-extract">
+          <div class="step-icon-wrap" id="step-extract-icon">🎵</div>
+          <div class="step-body">
+            <div class="step-name">Extraction audio</div>
+            <div class="step-status" id="step-extract-status">En attente</div>
+            <div class="progress-wrap" id="extract-prog-wrap" style="display:none">
+              <div class="progress-bar" id="extract-prog-bar" style="width:0%"></div>
+            </div>
+          </div>
+          <div class="step-badge" id="step-extract-badge">En attente</div>
+        </div>
+
+        <div class="step-item" id="step-transcribe">
+          <div class="step-icon-wrap" id="step-transcribe-icon">📝</div>
+          <div class="step-body">
+            <div class="step-name">Transcription Groq Whisper</div>
+            <div class="step-status" id="step-transcribe-status">En attente</div>
+          </div>
+          <div class="step-badge" id="step-transcribe-badge">En attente</div>
+        </div>
+
+        <div class="step-item" id="step-viral">
+          <div class="step-icon-wrap" id="step-viral-icon">🎯</div>
+          <div class="step-body">
+            <div class="step-name">Détection moments viraux</div>
+            <div class="step-status" id="step-viral-status">Prochainement</div>
+          </div>
+          <div class="step-badge" id="step-viral-badge">Bientôt</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW: results -->
+  <div id="view-results" style="display:none">
+    <div class="transcript-card">
+      <div class="transcript-header">
+        <div>
+          <div class="transcript-header-title">Transcription</div>
+          <div class="transcript-header-meta" id="transcript-meta">—</div>
+        </div>
+        <div class="transcript-actions">
+          <button class="btn-sm" id="btn-copy">Copier le texte</button>
+          <button class="btn-sm primary" id="btn-reset">Nouvelle vidéo</button>
+        </div>
+      </div>
+      <div class="transcript-body" id="transcript-body"></div>
+    </div>
+
+    <div class="next-banner">
+      <div>
+        <div class="next-banner-title">🎯 Détection des moments viraux</div>
+        <div class="next-banner-sub">Découpage automatique avec FFmpeg.wasm — prochaine étape d'implémentation.</div>
+      </div>
+      <div class="next-banner-icon">⚡</div>
+    </div>
+  </div>
+</main>
+
+<!-- SETTINGS MODAL -->
+<div id="modal-settings" class="modal-overlay" style="display:none">
+  <div class="modal">
+    <div class="modal-title">Paramètres API</div>
+    <div class="modal-sub">Configure ta clé Groq pour activer la transcription IA gratuite.</div>
+    <label class="form-label" for="groq-key-input">Clé API Groq</label>
+    <input class="form-input" type="password" id="groq-key-input" placeholder="gsk_..." autocomplete="off" />
+    <p class="form-hint">
+      Clé gratuite sur <a href="https://console.groq.com" target="_blank">console.groq.com</a> ·
+      7 200 secondes audio/jour · Modèle : <strong>whisper-large-v3-turbo</strong> ·
+      Stockée localement dans ton navigateur, jamais envoyée à nos serveurs.
+    </p>
+    <div class="modal-actions">
+      <button class="btn-cancel" id="btn-modal-cancel">Annuler</button>
+      <button class="btn-save" id="btn-modal-save">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+  import { FFmpeg } from 'https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/+esm';
+  import { fetchFile, toBlobURL } from 'https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/+esm';
+
+  // ── Config ──────────────────────────────────────────────
+  const SUPABASE_URL  = 'https://heqjsyfugerterdhhyxd.supabase.co';
+  const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhlcWpzeWZ1Z2VydGVyZGhoeXhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0ODQ4MzcsImV4cCI6MjA4OTA2MDgzN30.nCP1SXbUIM7vOg0votfKuyKJbw1-yXu6nW9IdO7fnpw';
+  const GROQ_ENDPOINT = 'https://api.groq.com/openai/v1/audio/transcriptions';
+  const GROQ_MODEL    = 'whisper-large-v3-turbo';
+  const MAX_DIRECT_MB = 24 * 1024 * 1024; // 24 MB → send directly, no FFmpeg needed
+  const FFMPEG_CDN    = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/esm';
+
+  // ── State ────────────────────────────────────────────────
+  const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+  let ffmpeg      = null;
+  let currentFile = null;
+  let transcript  = null;
+
+  // ── DOM helpers ──────────────────────────────────────────
+  const $  = id => document.getElementById(id);
+  let toastTimer = null;
+
+  function toast(msg, ms = 3500) {
+    const el = $('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), ms);
+  }
+
+  function showView(name) {
+    ['idle', 'processing', 'results'].forEach(v =>
+      $('view-' + v).style.display = v === name ? 'block' : 'none'
     );
+  }
 
-    // Auth guard
-    _supabase.auth.getSession().then(({ data }) => {
-      if (!data.session) {
-        window.location.href = 'app.html';
-        return;
-      }
-      const user = data.session.user;
-      const name = user.user_metadata?.full_name || user.email.split('@')[0];
-      const initial = name.charAt(0).toUpperCase();
+  function setStep(id, state, statusText, badgeText, iconHtml) {
+    const el        = $(id);
+    const iconWrap  = $(`${id}-icon`);
+    const statusEl  = $(`${id}-status`);
+    const badgeEl   = $(`${id}-badge`);
 
-      document.getElementById('user-avatar').textContent = initial;
-      document.getElementById('user-name').textContent = name;
-      document.getElementById('greeting-name').textContent = name.split(' ')[0];
+    el.className = 'step-item' + (state ? ' ' + state : '');
+    statusEl.textContent = statusText;
+    badgeEl.textContent  = badgeText;
+
+    if (iconHtml !== undefined) {
+      iconWrap.innerHTML = iconHtml;
+    } else if (state === 'active') {
+      iconWrap.innerHTML = '<div class="spinner"></div>';
+    } else if (state === 'done') {
+      iconWrap.textContent = '✓';
+    } else if (state === 'error') {
+      iconWrap.textContent = '✗';
+    }
+  }
+
+  // ── Auth ─────────────────────────────────────────────────
+  sb.auth.getSession().then(({ data }) => {
+    if (!data.session) { window.location.href = 'app.html'; return; }
+    const user = data.session.user;
+    const name = user.user_metadata?.full_name || user.email.split('@')[0];
+    $('user-avatar').textContent    = name.charAt(0).toUpperCase();
+    $('user-name').textContent      = name;
+    $('greeting-name').textContent  = name.split(' ')[0];
+  });
+
+  $('btn-logout').addEventListener('click', async () => {
+    await sb.auth.signOut();
+    window.location.href = 'app.html';
+  });
+
+  // ── API Key ──────────────────────────────────────────────
+  const KEY_STORAGE = 'clipsly_groq_key';
+  const getKey      = () => localStorage.getItem(KEY_STORAGE) || '';
+
+  function refreshKeyBanner() {
+    $('apikey-banner').style.display = getKey() ? 'none' : 'flex';
+  }
+  refreshKeyBanner();
+
+  function openSettings() {
+    $('groq-key-input').value = getKey();
+    $('modal-settings').style.display = 'flex';
+  }
+
+  $('btn-banner-settings').addEventListener('click', openSettings);
+  $('nav-settings').addEventListener('click', openSettings);
+  $('btn-modal-cancel').addEventListener('click', () => $('modal-settings').style.display = 'none');
+  $('modal-settings').addEventListener('click', e => {
+    if (e.target === $('modal-settings')) $('modal-settings').style.display = 'none';
+  });
+  $('btn-modal-save').addEventListener('click', () => {
+    const k = $('groq-key-input').value.trim();
+    if (k) {
+      localStorage.setItem(KEY_STORAGE, k);
+      toast('✅ Clé API sauvegardée !');
+    } else {
+      localStorage.removeItem(KEY_STORAGE);
+      toast('Clé API supprimée');
+    }
+    $('modal-settings').style.display = 'none';
+    refreshKeyBanner();
+  });
+
+  // ── Upload ───────────────────────────────────────────────
+  const zone      = $('uploadZone');
+  const fileInput = $('fileInput');
+
+  $('btn-pick').addEventListener('click', e => { e.stopPropagation(); fileInput.click(); });
+  zone.addEventListener('click', () => { if (!currentFile) fileInput.click(); });
+  fileInput.addEventListener('change', e => { if (e.target.files[0]) selectFile(e.target.files[0]); });
+
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault();
+    zone.classList.remove('dragover');
+    const f = e.dataTransfer.files[0];
+    if (f) selectFile(f);
+  });
+
+  function selectFile(file) {
+    if (!file.type.startsWith('video/')) {
+      toast('⚠️ Sélectionne un fichier vidéo (MP4, MOV, MKV...)');
+      return;
+    }
+    currentFile = file;
+    $('ui-idle').style.display     = 'none';
+    $('ui-selected').style.display = 'block';
+    zone.classList.add('has-file');
+    $('file-name').textContent = file.name;
+    $('file-size').textContent = fmtBytes(file.size);
+  }
+
+  $('btn-change').addEventListener('click', e => {
+    e.stopPropagation();
+    resetUpload();
+    fileInput.click();
+  });
+
+  function resetUpload() {
+    currentFile = null;
+    fileInput.value = '';
+    $('ui-idle').style.display     = 'block';
+    $('ui-selected').style.display = 'none';
+    zone.classList.remove('has-file');
+  }
+
+  $('btn-analyze').addEventListener('click', runAnalysis);
+  $('btn-reset').addEventListener('click', () => {
+    resetUpload();
+    transcript = null;
+    showView('idle');
+  });
+  $('nav-clips').addEventListener('click', () => toast('🎬 Mes clips — bientôt disponible !'));
+
+  // ── FFmpeg ───────────────────────────────────────────────
+  async function loadFFmpeg() {
+    if (ffmpeg) return;
+    ffmpeg = new FFmpeg();
+    await ffmpeg.load({
+      coreURL: await toBlobURL(`${FFMPEG_CDN}/ffmpeg-core.js`,   'text/javascript'),
+      wasmURL: await toBlobURL(`${FFMPEG_CDN}/ffmpeg-core.wasm`, 'application/wasm'),
+    });
+  }
+
+  async function extractAudio(file, onProgress) {
+    setStep('step-extract', 'active', 'Chargement FFmpeg.wasm…', 'En cours');
+    await loadFFmpeg();
+
+    const progressHandler = ({ progress }) => {
+      const pct = Math.min(Math.round(progress * 100), 99);
+      $('extract-prog-bar').style.width = pct + '%';
+      $('step-extract-status').textContent = `Extraction audio… ${pct}%`;
+      onProgress(pct);
+    };
+    ffmpeg.on('progress', progressHandler);
+
+    const ext  = file.name.slice(file.name.lastIndexOf('.')).toLowerCase() || '.mp4';
+    const inName = 'input' + ext;
+
+    await ffmpeg.writeFile(inName, await fetchFile(file));
+    await ffmpeg.exec([
+      '-i', inName,
+      '-vn',                    // strip video
+      '-acodec', 'libmp3lame',
+      '-b:a', '64k',            // 64 kbps ≈ 0.48 MB/min → stays under 25 MB for ~50 min
+      '-ac', '1',               // mono
+      '-ar', '16000',           // 16 kHz (optimal for speech models)
+      'audio.mp3'
+    ]);
+
+    const data = await ffmpeg.readFile('audio.mp3');
+    ffmpeg.off('progress', progressHandler);
+    await ffmpeg.deleteFile(inName).catch(() => {});
+    await ffmpeg.deleteFile('audio.mp3').catch(() => {});
+
+    return new Blob([data.buffer], { type: 'audio/mpeg' });
+  }
+
+  // ── Groq Whisper ─────────────────────────────────────────
+  async function transcribeGroq(blob, filename, apiKey) {
+    const form = new FormData();
+    form.append('file', blob, filename);
+    form.append('model', GROQ_MODEL);
+    form.append('response_format', 'verbose_json');
+    form.append('timestamp_granularities[]', 'segment');
+
+    const res = await fetch(GROQ_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${apiKey}` },
+      body: form,
     });
 
-    async function handleLogout() {
-      await _supabase.auth.signOut();
-      window.location.href = 'app.html';
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error?.message || `Erreur HTTP ${res.status}`);
+    }
+    return res.json();
+  }
+
+  // ── Main pipeline ─────────────────────────────────────────
+  async function runAnalysis() {
+    const apiKey = getKey();
+    if (!apiKey) { openSettings(); toast('🔑 Configure ta clé Groq d\'abord'); return; }
+    if (!currentFile) return;
+
+    showView('processing');
+
+    // Reset steps
+    setStep('step-extract',   '',  'En attente',      'En attente',    '🎵');
+    setStep('step-transcribe','',  'En attente',      'En attente',    '📝');
+    setStep('step-viral',     '',  'Prochainement',   'Bientôt',       '🎯');
+
+    // ── Step 1 : audio ──────────────────────────────────────
+    $('pipeline-sub').textContent = 'Étape 1/2 — Préparation audio';
+    let audioBlob;
+
+    try {
+      if (currentFile.size <= MAX_DIRECT_MB) {
+        // Small file: send video directly (Groq accepts mp4/mov/webm/etc.)
+        audioBlob = currentFile;
+        $('extract-prog-wrap').style.display = 'block';
+        $('extract-prog-bar').style.width = '100%';
+        setStep('step-extract', 'done',
+          `Fichier envoyé directement (${fmtBytes(currentFile.size)})`,
+          'Fait', '✓');
+      } else {
+        // Large file: extract compressed audio via FFmpeg.wasm
+        $('extract-prog-wrap').style.display = 'block';
+        audioBlob = await extractAudio(currentFile, () => {});
+        const sizeMB = fmtBytes(audioBlob.size);
+        $('extract-prog-bar').style.width = '100%';
+        setStep('step-extract', 'done', `Audio extrait — ${sizeMB}`, 'Fait', '✓');
+      }
+    } catch (err) {
+      setStep('step-extract', 'error', err.message, 'Erreur', '✗');
+      toast('❌ Extraction échouée : ' + err.message);
+      return;
     }
 
-    function showComingSoon() {
-      const toast = document.getElementById('toast');
-      toast.style.transform = 'translateY(0)';
-      setTimeout(() => { toast.style.transform = 'translateY(80px)'; }, 3000);
+    // ── Step 2 : transcription ──────────────────────────────
+    $('pipeline-sub').textContent = 'Étape 2/2 — Transcription Groq Whisper';
+    setStep('step-transcribe', 'active', `Envoi à Groq (${GROQ_MODEL})…`, 'En cours');
+
+    try {
+      const filename = audioBlob === currentFile ? currentFile.name : 'audio.mp3';
+      transcript = await transcribeGroq(audioBlob, filename, apiKey);
+
+      const segs     = transcript.segments?.length || 0;
+      const duration = fmtDuration(transcript.duration);
+      const lang     = transcript.language || '?';
+      setStep('step-transcribe', 'done',
+        `${segs} segments · ${duration} · ${lang}`,
+        'Fait', '✓');
+    } catch (err) {
+      setStep('step-transcribe', 'error', err.message, 'Erreur', '✗');
+      toast('❌ Transcription échouée : ' + err.message);
+      return;
     }
 
-    function onDragOver(e) {
-      e.preventDefault();
-      document.getElementById('uploadZone').classList.add('dragover');
-    }
-    function onDragLeave() {
-      document.getElementById('uploadZone').classList.remove('dragover');
-    }
-    function onDrop(e) {
-      e.preventDefault();
-      document.getElementById('uploadZone').classList.remove('dragover');
-      showComingSoon();
-    }
-  </script>
+    // ── Show results ─────────────────────────────────────────
+    renderTranscript(transcript);
+    showView('results');
+  }
+
+  // ── Transcript rendering ─────────────────────────────────
+  function renderTranscript(data) {
+    const segs = data.segments || [];
+    const lang = data.language || '?';
+    const dur  = fmtDuration(data.duration);
+
+    $('transcript-meta').textContent =
+      `${segs.length} segments · ${dur} · langue : ${lang}`;
+
+    $('transcript-body').innerHTML = segs.map(s => `
+      <div class="segment">
+        <span class="seg-time">${fmtTime(s.start)} → ${fmtTime(s.end)}</span>
+        <span class="seg-text">${escHtml(s.text.trim())}</span>
+      </div>
+    `).join('');
+  }
+
+  $('btn-copy').addEventListener('click', () => {
+    if (!transcript?.text) return;
+    navigator.clipboard.writeText(transcript.text)
+      .then(() => toast('📋 Transcription copiée !'))
+      .catch(() => toast('⚠️ Impossible de copier'));
+  });
+
+  // ── Utils ─────────────────────────────────────────────────
+  function fmtBytes(b) {
+    if (b < 1e6)  return (b / 1e3).toFixed(0) + ' Ko';
+    if (b < 1e9)  return (b / 1e6).toFixed(1) + ' Mo';
+    return (b / 1e9).toFixed(2) + ' Go';
+  }
+  function fmtTime(s) {
+    const m = Math.floor(s / 60);
+    const sec = Math.floor(s % 60);
+    return `${m}:${String(sec).padStart(2, '0')}`;
+  }
+  function fmtDuration(s) {
+    if (!s) return '?';
+    const m = Math.floor(s / 60);
+    const sec = Math.floor(s % 60);
+    return m > 0 ? `${m}m ${sec}s` : `${sec}s`;
+  }
+  function escHtml(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+</script>
 </body>
 </html>
